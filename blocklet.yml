@@ -1,0 +1,31 @@
+name: abt-blocklet-demo
+description: Blocklet demo with react
+group: static
+main: build
+author:
+  name: jeango
+specVersion: 1.0.0
+version: 1.0.0
+files:
+  - blocklet.md
+  - screenshots
+interfaces:
+  - type: web
+    name: publicUrl
+    path: web
+    prefix: '*'
+    port: BLOCKLET_PORT
+    protocol: http
+did: z8iZzc5SKZPsJt8gsNNnyh9SdTXmAbZrBKNQL
+community: ''
+documentation: ''
+homepage: ''
+license: ''
+timeout:
+  start: 60
+requirements:
+  abtnode: '>=1.1.0'
+  os: '*'
+  cpu: '*'
+environments: []
+screenshots: []
