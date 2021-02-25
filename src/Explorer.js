@@ -28,7 +28,11 @@ export function loadBlock(hash, setV = ()=>{}, onError = ()=>{}) {
     return res.json();
   })
   .then(json => {
-    setV(json);
+    try{
+      setV(json);
+    }catch(ex){
+      console.log(ex);
+    }
     return json;
   })
   .catch(ex => {
@@ -63,6 +67,7 @@ export function App(props) {
       <header className="App-header">
         <img src={coin} className="App-logo" alt="logo" style={{height:128}} />
         <div className="loading">{/* ❤🧡💚 */}Loading...</div>
+        { props.children }
       </header>
     )
   }
@@ -93,7 +98,6 @@ export function App(props) {
           <div className="rows bb"><dt className="col16 fxFixed taRight">Block Reward</dt>             <dd>Unknown</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Fee Reward</dt>               <dd>{block.fee}</dd> BTC</div>
         </dl>
-        { props.children }
         <h3>Block Transactions</h3>
         {tx.map( it => 
           <div className="tx fXS columns card bgDarkGray taLeft" style={{width: "70vw"}}>

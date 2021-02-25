@@ -24,7 +24,7 @@ function App() {
         setV("");
         alert(ev);
         }}>
-      <button className="button-minimal" onClick={ev => setV("")}>Return</button>
+      <div className="return" onClick={ev => setV("")}>🏡</div>
       </Explorer>
     </header>
   )      
