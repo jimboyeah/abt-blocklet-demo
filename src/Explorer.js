@@ -63,7 +63,7 @@ export function countOut(items) {
 }
 
 export function getBlockTotal(block) {
-  let sum = 0, ins = 0, out = 0, spenti = 0, spento = 0, fee;
+  let sum = 0, ins = 0, out = 0, spenti = 0, spento = 0, fee = 0;
   block.tx.map(it => {
     fee += it.fee;
     it.out.map(itout => {
@@ -79,7 +79,7 @@ export function getBlockTotal(block) {
     })
     return it;
   })
-  sum = SAT2BTC(ins);
+  sum = SAT2BTC(spenti-fee);
   console.log({
     sum: SAT2BTC(sum), 
     fee: SAT2BTC(fee), 
