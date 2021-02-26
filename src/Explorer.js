@@ -42,7 +42,15 @@ export function loadBlock(hash, setV = ()=>{}, onError = ()=>{}) {
   });
 }
 
-export function formatBTC(value) {
+export function fixed(value, fract = 2) {
+  return value.toFixed(fract);
+}
+
+export function fixed3(value) {
+  return fixed(value, 3);
+}
+
+export function SAT2BTC(value) {
   return (value/100000000).toFixed(8);
 }
 
@@ -51,7 +59,35 @@ export function countOut(items) {
   for(let p in items) {
     sum += items[p].value;
   }
-  return formatBTC(sum);
+  return SAT2BTC(sum);
+}
+
+export function getBlockTotal(block) {
+  let sum = 0, ins = 0, out = 0, spenti = 0, spento = 0, fee;
+  block.tx.map(it => {
+    fee += it.fee;
+    it.out.map(itout => {
+      out += itout.value;
+      if(itout.spent === true) spento += itout.value;
+      return itout;
+    })
+    it.inputs.map(itins => {
+      if(!itins.prev_out) return itins;
+      ins += itins.prev_out.value;
+      if(itins.prev_out.spent === true) spenti += itins.prev_out.value;
+      return itins;
+    })
+    return it;
+  })
+  sum = SAT2BTC(ins);
+  console.log({
+    sum: SAT2BTC(sum), 
+    fee: SAT2BTC(fee), 
+    ins: SAT2BTC(ins), 
+    out: SAT2BTC(out), 
+    spenti: SAT2BTC(spenti), 
+    spento: SAT2BTC(spento)})
+  return sum;
 }
 
 export function App(props) {
@@ -85,16 +121,16 @@ export function App(props) {
           <div className="rows bb"><dt className="col16 fxFixed taRight">Height</dt>                   <dd>{block.height}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Miner</dt>                    <dd><a href={"https://www.blockchain.com/btc/address/"+miner}>Unknown</a></dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Number of Transactions</dt>   <dd>{block.tx.length}</dd></div>
-          <div className="rows bb"><dt className="col16 fxFixed taRight">Difficulty</dt>               <dd>x</dd></div>
+          <div className="rows bb"><dt className="col16 fxFixed taRight">Difficulty</dt>               <dd>18,670,168,558,399.59 (2021/02/27)</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Merkle root</dt>              <dd className="addr col34">{block.mrkl_root}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Version</dt>                  <dd>{block.ver}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Bits</dt>                     <dd>{block.bits}</dd></div>
-          <div className="rows bb"><dt className="col16 fxFixed taRight">Weight</dt>                   <dd>{block.weight}</dd></div>
+          <div className="rows bb"><dt className="col16 fxFixed taRight">Weight</dt>                   <dd>{block.weight} WU</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Size</dt>                     <dd>{block.size}</dd>bytes</div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Nonce</dt>                    <dd>{block.nonce}</dd></div>
-          <div className="rows bb"><dt className="col16 fxFixed taRight">Transaction Volume</dt>       <dd>Unknown</dd></div>
-          <div className="rows bb"><dt className="col16 fxFixed taRight">Block Reward</dt>             <dd>Unknown</dd></div>
-          <div className="rows bb"><dt className="col16 fxFixed taRight">Fee Reward</dt>               <dd>{block.fee}</dd> BTC</div>
+          <div className="rows bb"><dt className="col16 fxFixed taRight">Transaction Volume</dt>       <dd>{getBlockTotal(block)} BTC</dd></div>
+          <div className="rows bb"><dt className="col16 fxFixed taRight">Block Reward</dt>             <dd>6.25000000 BTC (Since 2020)</dd></div>
+          <div className="rows bb"><dt className="col16 fxFixed taRight">Fee Reward</dt>               <dd>{SAT2BTC(block.fee)} BTC</dd></div>
         </dl>
         <h3>Block Transactions</h3>
         {tx.map( it => 
@@ -112,7 +148,7 @@ export function App(props) {
                 {item.prev_out && 
                   <div className="rows fxBetween" key={item.sequence}>
                     <p className="addr">{item.prev_out.addr}</p>
-                    <p className="btc">{formatBTC(item.prev_out.value)} BTC</p>
+                    <p className="btc">{SAT2BTC(item.prev_out.value)} BTC</p>
                     <a href={"https://www.blockchain.com/btc/address/"+item.prev_out.addr}>
                       <img className="inline" src={out} alt="out"/>
                     </a>
@@ -129,18 +165,22 @@ export function App(props) {
                 <div className="rows fxBetween" key={item.sequence}>
                 { item.addr === "null" && "OP_RETURN"}
                 { item.addr !== "null" && <p className="addr">{item.addr}</p> }
-                <p className="btc"> {formatBTC(item.value)} BTC</p>
+                <p className="btc"> {SAT2BTC(item.value)} BTC</p>
                 <a href={item.addr ==="null"? "#":("https://www.blockchain.com/btc/address/"+item.addr)}>
                   {item.spent && <img className="inline" src={spent} title="Spent" alt="spent"/> }
                   {!item.spent && <img className="inline" src={unspent} title="Unspent" alt="unspent"/> }
                 </a>
                 </div>
               )}
-              <div className="cLightGreen taRight layLV">{ countOut(it.out) } BTC</div>
+              {/* <div className="cLightGreen taRight layLV">{ countOut(it.out) } BTC</div> */}
               </div>
 
             </div>
-            <p className="cLightGreen layLV">Fee: {formatBTC(it.fee)} BTC</p>
+            <div className="cLightGreen layLV rows fxBetween">
+              <p>Fee: {SAT2BTC(it.fee)} BTC</p>
+              <p>{ countOut(it.out) } BTC</p>
+            </div>
+            <div className="feeverage">({fixed3(it.fee/it.size)} sat/byte - {fixed3(it.fee/it.weight)} sat/WU - {it.size} bytes)</div>
           </div>
         )}
         <Pager current={page} onPage={page => setPage(page)} count={block.tx.length} />

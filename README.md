@@ -38,7 +38,7 @@ You can get more details from [Get started with ABT Node](https://www.arcblock.i
 
 Clone the repo and start development using a debug mode ABT Node instance inside this project:
 ```shell
-git clone git@github.com:blocklet/react-demo.git
+git clone git@github.com:jimboyeah/abt-blocklet-demo.git
 cd react-demo
 yarn
 abtnode init --mode debug

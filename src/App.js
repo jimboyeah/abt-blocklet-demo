@@ -36,7 +36,7 @@ function App() {
         <img src={goat} className="" alt="logo" />
         <h1 className="grow"> Block Explorer </h1>
         <div className="col12">
-        <input placeholder="Type Block Hash Here" className="col34 layL" type="text" 
+        <input placeholder="Type Block Hash Here, ex. 1 for the genesis block" className="col34 layL" type="text" 
           ref={ref}
           onKeyDown={ev => doKeydown(ev)}
           defaultValue="00000000000000000007878ec04bb2b2e12317804810f4c26033585b3f81ffaa"/>
