@@ -42,8 +42,12 @@ export function loadBlock(hash, setV = ()=>{}, onError = ()=>{}) {
   });
 }
 
+export function pretty(value) {
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 export function fixed(value, fract = 2) {
-  return value.toFixed(fract);
+  return pretty(value.toFixed(fract));
 }
 
 export function fixed3(value) {
@@ -118,16 +122,16 @@ export function App(props) {
           <div className="rows bb"><dt className="col16 fxFixed taRight">Hash</dt>                     <dd className="addr col34">{hash}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Confirmations</dt>            <dd>Unknown</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Timestamp</dt>                <dd>{new Date(block.time*1000).toLocaleString()}</dd></div>
-          <div className="rows bb"><dt className="col16 fxFixed taRight">Height</dt>                   <dd>{block.height}</dd></div>
+          <div className="rows bb"><dt className="col16 fxFixed taRight">Height</dt>                   <dd>{pretty(block.height)}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Miner</dt>                    <dd><a href={"https://www.blockchain.com/btc/address/"+miner}>Unknown</a></dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Number of Transactions</dt>   <dd>{block.tx.length}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Difficulty</dt>               <dd>18,670,168,558,399.59 (2021/02/27)</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Merkle root</dt>              <dd className="addr col34">{block.mrkl_root}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Version</dt>                  <dd>{block.ver}</dd></div>
-          <div className="rows bb"><dt className="col16 fxFixed taRight">Bits</dt>                     <dd>{block.bits}</dd></div>
-          <div className="rows bb"><dt className="col16 fxFixed taRight">Weight</dt>                   <dd>{block.weight} WU</dd></div>
-          <div className="rows bb"><dt className="col16 fxFixed taRight">Size</dt>                     <dd>{block.size}</dd>bytes</div>
-          <div className="rows bb"><dt className="col16 fxFixed taRight">Nonce</dt>                    <dd>{block.nonce}</dd></div>
+          <div className="rows bb"><dt className="col16 fxFixed taRight">Bits</dt>                     <dd>{pretty(block.bits)}</dd></div>
+          <div className="rows bb"><dt className="col16 fxFixed taRight">Weight</dt>                   <dd>{pretty(block.weight)} WU</dd></div>
+          <div className="rows bb"><dt className="col16 fxFixed taRight">Size</dt>                     <dd>{pretty(block.size)}</dd>bytes</div>
+          <div className="rows bb"><dt className="col16 fxFixed taRight">Nonce</dt>                    <dd>{pretty(block.nonce)}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Transaction Volume</dt>       <dd>{getBlockTotal(block)} BTC</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Block Reward</dt>             <dd>6.25000000 BTC (Since 2020)</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Fee Reward</dt>               <dd>{SAT2BTC(block.fee)} BTC</dd></div>
