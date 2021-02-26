@@ -24,9 +24,7 @@ export function Pager({count, current=1, size = 10, onPage = ()=>{}}){
 export function loadBlock(hash, setV = ()=>{}, onError = ()=>{}) {
   // https://www.blockchain.com/api/blockchain_api
   return fetch("https://blockchain.info/rawblock/"+hash+"?cors=true")
-  .then(res => {
-    return res.json();
-  })
+  .then(res => res.json())
   .then(json => {
     try{
       setV(json);
@@ -81,14 +79,14 @@ export function App(props) {
         <h1 className="grow fxFixed" style={{fontSize: 42}}> <img src={coin} className="inline" alt="logo" /> Block Explorer </h1>
         <h3>Block {block.height}</h3>
         <dl className="columns fXS">
-          <div className="rows bb"><dt className="col16 fxFixed taRight">Hash</dt>                     <dd>{hash}</dd></div>
+          <div className="rows bb"><dt className="col16 fxFixed taRight">Hash</dt>                     <dd className="addr col34">{hash}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Confirmations</dt>            <dd>Unknown</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Timestamp</dt>                <dd>{new Date(block.time*1000).toLocaleString()}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Height</dt>                   <dd>{block.height}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Miner</dt>                    <dd><a href={"https://www.blockchain.com/btc/address/"+miner}>Unknown</a></dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Number of Transactions</dt>   <dd>{block.tx.length}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Difficulty</dt>               <dd>x</dd></div>
-          <div className="rows bb"><dt className="col16 fxFixed taRight">Merkle root</dt>              <dd>{block.mrkl_root}</dd></div>
+          <div className="rows bb"><dt className="col16 fxFixed taRight">Merkle root</dt>              <dd className="addr col34">{block.mrkl_root}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Version</dt>                  <dd>{block.ver}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Bits</dt>                     <dd>{block.bits}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Weight</dt>                   <dd>{block.weight}</dd></div>
@@ -100,8 +98,8 @@ export function App(props) {
         </dl>
         <h3>Block Transactions</h3>
         {tx.map( it => 
-          <div className="tx fXS columns card bgDarkGray taLeft" style={{width: "70vw"}}>
-            <p className="layLV">Hash: {it.hash}</p>
+          <div className="tx fXS columns card bgDarkGray taLeft">
+            <p className="layLV addr col11">Hash: {it.hash}</p>
             
             <div className="rows">
 

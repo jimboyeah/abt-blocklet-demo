@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import App, {loadBlock, formatBTC, Pager} from './Explorer';
+import App, { formatBTC, Pager} from './Explorer';
 import '@testing-library/jest-dom/extend-expect'
 
 test('renders loading text', () => {

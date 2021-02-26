@@ -131,9 +131,14 @@ pre::-webkit-scrollbar-thumb,
 }
 
 
-@media (max-width: 600px) {
+@media screen and (min-width: 600px) {
+    .card { width: 70vw; }
+}
+
+@media screen and (max-width: 600px) {
+    .card { width: 95vw; }
     .grid {
-        width: 100%;
+        width: 100vw;
         flex-direction: column;
     }
 }
@@ -201,7 +206,7 @@ pre::-webkit-scrollbar-thumb,
 .columns {
     display: flex;
     flex-direction: column;
-    align-items: left;
+    align-items: stretch;
     justify-content: left;
     flex-wrap: nowrap;
 }
