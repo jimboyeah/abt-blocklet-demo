@@ -119,7 +119,7 @@ export function App(props) {
         <h1 className="grow fxFixed" style={{fontSize: 42}}> <img src={coin} className="inline" alt="logo" /> Block Explorer </h1>
         <h3>Block {block.height}</h3>
         <dl className="columns fXS">
-          <div className="rows bb"><dt className="col16 fxFixed taRight">Hash</dt>                     <dd className="addr col34">{hash}</dd></div>
+          <div className="rows bb"><dt className="col16 fxFixed taRight">Hash</dt>                     <dd className="addr col34">{block.hash}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Confirmations</dt>            <dd>Unknown</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Timestamp</dt>                <dd>{new Date(block.time*1000).toLocaleString()}</dd></div>
           <div className="rows bb"><dt className="col16 fxFixed taRight">Height</dt>                   <dd>{pretty(block.height)}</dd></div>
