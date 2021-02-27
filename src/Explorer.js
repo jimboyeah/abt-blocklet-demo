@@ -94,7 +94,7 @@ export function getBlockTotal(block) {
   return sum;
 }
 
-export function App(props) {
+export function Explorer(props) {
   let {hash} = props;
   const [block, setV] = useState(null)
   const [page, setPage] = useState(1)
@@ -196,4 +196,4 @@ export function App(props) {
   );
 }
 
-export default App;
+export default Explorer;

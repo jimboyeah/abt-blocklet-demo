@@ -9,8 +9,8 @@ function App() {
   const [state, setV] = useState("")
 
   let doKeydown = (ev) => {
-    if(ev.key === "Enter" && ev.value !== ""){
-      setV(ev.value);
+    if(ev.key === "Enter" && ref.current.value !== ""){
+      setV(ref.current.value);
     }
   }
   

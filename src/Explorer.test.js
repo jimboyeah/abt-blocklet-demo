@@ -1,9 +1,10 @@
-import { render, screen } from '@testing-library/react';
-import App, { formatBTC, Pager} from './Explorer';
 import '@testing-library/jest-dom/extend-expect'
+import { render, screen, fireEvent, getByText } from '@testing-library/react';
+import Explorer, { SAT2BTC, Pager} from './Explorer';
+import App from './App'
 
 test('renders loading text', () => {
-  render(<App />);
+  render(<Explorer />);
   const linkElement = screen.getByText(/Loading.../i);
   expect(linkElement).toBeInTheDocument();
 });
@@ -12,6 +13,23 @@ test('renders pager text', () => {
   render(<Pager count={100} />);
   const linkElement = screen.getByText(/\[10\]/i);
   expect(linkElement).toBeInTheDocument();
+});
+
+test('click test', () => {
+  const fakeUserResponse = {token: 'fake_user_token'}
+  let fetch = window.fetch;
+
+  render(<App />);
+  let input = screen.getByPlaceholderText(/Type Block Hash Here/i);
+
+  jest.spyOn(window, 'fetch').mockImplementationOnce((url, ...args) => {
+    let hash = url.indexOf(input.value)>-1;
+    // console.log("fetch args", hash, input.value)
+    expect(hash).toBe(true);
+    return fetch(args)
+  });
+  
+  fireEvent.keyDown( input, { key: 'Enter', code: 'Enter' } )
 });
 
 // test('test to fetch block rawdata', () => {
@@ -27,10 +45,10 @@ test('renders pager text', () => {
 //   });
 // });
 
-test('test formatBTC', () => {
-  let btc = formatBTC(80000);
+test('test SAT2BTC', () => {
+  let btc = SAT2BTC(80000);
   expect(btc).toBe("0.00080000");
-  let btc1 = formatBTC(100000000);
+  let btc1 = SAT2BTC(100000000);
   expect(btc1).toBe("1.00000000");
 });
 
