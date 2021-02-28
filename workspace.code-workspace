@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../.nvm/versions/node/v15.9.0"
+		}
+	],
+	"settings": {}
+}

@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen, fireEvent, getByText } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import Explorer, { SAT2BTC, Pager} from './Explorer';
 import App from './App'
 
@@ -16,7 +16,6 @@ test('renders pager text', () => {
 });
 
 test('click test', () => {
-  const fakeUserResponse = {token: 'fake_user_token'}
   let fetch = window.fetch;
 
   render(<App />);

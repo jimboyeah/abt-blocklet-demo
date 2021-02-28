@@ -39,7 +39,7 @@ function App() {
         <input placeholder="Type Block Hash Here, ex. 1 for the genesis block" className="col34 layL" type="text" 
           ref={ref}
           onKeyDown={ev => doKeydown(ev)}
-          defaultValue="00000000000000000007878ec04bb2b2e12317804810f4c26033585b3f81ffaa"/>
+          defaultValue="150000"/>
           <br />
         <button className="button-minimal" onClick={ev => doQuery(ev)}>Inquire</button>
         </div>

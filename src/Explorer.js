@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import Loading from './Loading';
 
 // import goat from './img/goat.png';
 import coin from './img/bitcoin.svg';
@@ -16,7 +17,10 @@ export function Pager({count, current=1, size = 10, onPage = ()=>{}}){
   for(let i=start; i<=end; i++) pager.push(i);
   return (
     <div className="page rows fS layXLV">
-      {pager.map(it => (<div key={it} onClick={ ev => onPage(it) } style={{cursor:"pointer"}}>[{it}]</div>))}
+      {pager.map(it => (
+        <div key={it} onClick={ ev => onPage(it) } style={{cursor:"pointer"}}>
+        {current === it? "<--"+it+"-->":"["+it+"]"}
+        </div>))}
     </div>
   )
 }
@@ -104,7 +108,7 @@ export function Explorer(props) {
     return (
       <header className="App-header">
         <img src={coin} className="App-logo" alt="logo" style={{height:128}} />
-        <div className="loading">{/* ❤🧡💚 */}Loading...</div>
+        <Loading text="Loading..." />
         { props.children }
       </header>
     )
@@ -138,19 +142,19 @@ export function Explorer(props) {
         </dl>
         <h3>Block Transactions</h3>
         {tx.map( it => 
-          <div className="tx fXS columns card bgDarkGray taLeft">
+          <div key={it.hash} className="tx fXS columns card bgDarkGray taLeft">
             <p className="layLV addr col11">Hash: {it.hash}</p>
             
             <div className="rows">
 
               <div className="input columns col49">
-              { it.inputs.map(item => 
-              <>
+              { it.inputs.map((item, ik) => 
+              <div  key={it.hash + ik}>
                 {!item.prev_out && 
-                  <div key={item.sequence} className="cLightGreen">COINBASE (Newly Generated Coins)</div>
+                  <div className="cLightGreen">COINBASE (Newly Generated Coins)</div>
                 }
                 {item.prev_out && 
-                  <div className="rows fxBetween" key={item.sequence}>
+                  <div className="rows fxBetween">
                     <p className="addr">{item.prev_out.addr}</p>
                     <p className="btc">{SAT2BTC(item.prev_out.value)} BTC</p>
                     <a href={"https://www.blockchain.com/btc/address/"+item.prev_out.addr}>
@@ -158,15 +162,15 @@ export function Explorer(props) {
                     </a>
                   </div>
                 }
-              </>
+              </div>
               )}
               </div>
 
               <img className="layL" src={to} alt="to"/>
               
               <div className="out columns col49">
-              { it.out.map(item => 
-                <div className="rows fxBetween" key={item.sequence}>
+              { it.out.map((item, ik) => 
+                <div className="rows fxBetween" key={ik}>
                 { item.addr === "null" && "OP_RETURN"}
                 { item.addr !== "null" && <p className="addr">{item.addr}</p> }
                 <p className="btc"> {SAT2BTC(item.value)} BTC</p>
@@ -176,7 +180,6 @@ export function Explorer(props) {
                 </a>
                 </div>
               )}
-              {/* <div className="cLightGreen taRight layLV">{ countOut(it.out) } BTC</div> */}
               </div>
 
             </div>
