@@ -4,8 +4,8 @@ group: static
 main: build
 author:
   name: jeango
-specVersion: 1.0.0
-version: 1.0.0
+specVersion: 1.0.1
+version: 1.0.1
 files:
   - blocklet.md
   - screenshots
